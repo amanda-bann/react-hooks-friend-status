@@ -3,24 +3,32 @@ import { useState, useEffect } from "react";
 import Friend from "./Friend";
 
 const App = () => {
-  const [friendData, setFriendData] = useState({});
+  const [friendData, setFriendData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const request = await fetch('https://gist.githubusercontent.com/skillcrush-curriculum/8231fb5350d726663f2bb16af7cf6945/raw/0dde3b3942214ed39a08479b334c752bea05b3a6/friend-status.json')
+        const request = await fetch(
+          "https://gist.githubusercontent.com/skillcrush-curriculum/8231fb5350d726663f2bb16af7cf6945/raw/0dde3b3942214ed39a08479b334c752bea05b3a6/friend-status.json"
+        );
         const friendStatus = await request.json();
-        setFriendData(friendStatus)
+        setFriendData(friendStatus);
       } catch(e) { 
-        console.log("Oh no! There was an error fetching the data", e);
+        console.log("Oh no!There was an error fetching the data", e);
       }
     };
     fetchData();
-  }, [])
+  }, []);
 
   console.log(friendData)
 
-  return <div className="App"></div>;
+  return (
+    <div className="App">
+      {friendData.map((friend) => {
+        return <Friend key={friend.id} friend={friend} />;
+      })}
+    </div>
+  );
 };
 
 export default App;
